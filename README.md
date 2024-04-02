@@ -1,13 +1,52 @@
 ![SonarQube](images/sonar.png)![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)![Amazon EKS](https://img.shields.io/static/v1?style=for-the-badge&message=Amazon+EKS&color=222222&logo=Amazon+ECS&logoColor=FF9900&label=)
 
 
-Securing SonarQube Deployments: Encrypting JDBC Passwords in Kubernetes Secrets
+# Securing SonarQube Deployments: Encrypting JDBC Passwords in Kubernetes Secrets
 
+SonarQube is a powerful tool for continuous code quality inspection. However, ensuring the security of sensitive information such as JDBC passwords is crucial when deploying SonarQube in production environments. In this guide, we'll walk through the process of securely encrypting JDBC passwords and storing them in Kubernetes secrets to enhance the security of your SonarQube deployment.
 
+## Use Case Scenario:
+Our customer, let's call them CompanyX, has a robust infrastructure running on Kubernetes. They utilize PostgreSQL for their database needs and have implemented best practices for securing their deployments.He already has an encryption key that he uses for his passwords stored in a Kubernetes secret. Now, CompanyX aims to integrate SonarQube into their workflow to enhance code quality analysis. However, they prioritize security and want to ensure that sensitive data, such as database passwords, remains protected.
 
+![Flow pods](images/secretkey.png)
 
+## Prerequisites
+
+In this tutorial, we'll leverage an existing AWS EKS server for Kubernetes deployment. Additionally, we'll utilize AWS SDK in Go to provision a basic instance of PostgreSQL. However, it's not mandatory to follow this step if you already have your Kubernetes server deployed. We'll also provide scripts for deploying your own database instance, ensuring flexibility in your setup.
+
+Why use the AWS SDK in go ? Because i already had a PostgreSQL deployment module used in another project, so I utilized it. We could have employed it to deploy the entire database and SonarQube DCE, but I wanted to demonstrate the addition of a Helm template.
+
+If you have the prerequisites such as a Kubernetes server, a database instance, and Helm installed, you can skip directly to the SonarQube deployment section.
+
+Before you get started, you’ll need to have these things:
+
+* AWS account
+* [AWS Development Kit (AWS SDK) v2](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/)
+* [Go language installed](https://go.dev/)
+* [Kubectl installed](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html) is a command line tool that you use to communicate with the Kubernetes API 
+server.
+* [HELM](https://helm.sh/docs/intro/install/) The package manager for kubernetes
+* bash version 4+
+* A Git Client
+* AWS EKS cluster installed
+
+---
 
 ## Steps
+
+
+### ✅ Clone the repositories
+
+```bash
+:> git clone https://github.com/emmanuel-colussi-sonarsource/k8s-helm-sq-key k8s-helm-sq-key
+:> cd k8s-helm-sq-key
+```
+
+### ✅ Database deployment
+go to directory [db](db) (please read the README.md)
+
+### ✅ SonarQube deployment
+go to directory [sonarqube](sonarqube) (please read the README.md)
 
 ###  ✅ Generated an AES/GCM key
 I have a go program which generates the AES/GCM type key with no padding and a random Initialization Vector of 12 bytes.And which encrypts my JDBC user and password.
