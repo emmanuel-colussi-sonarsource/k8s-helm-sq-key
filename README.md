@@ -1,7 +1,7 @@
 ![SonarQube](images/sonar.png)![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)![Amazon EKS](https://img.shields.io/static/v1?style=for-the-badge&message=Amazon+EKS&color=222222&logo=Amazon+ECS&logoColor=FF9900&label=)
 
 
-# Securing SonarQube Deployments: Encrypting JDBC Passwords in Kubernetes Secrets
+# Securing SonarQube Deployments: Encrypting JDBC Passwords with AES/GCM Key in Kubernetes Secrets
 
 SonarQube is a powerful tool for continuous code quality inspection. However, ensuring the security of sensitive information such as JDBC passwords is crucial when deploying SonarQube in production environments. In this guide, we'll walk through the process of securely encrypting JDBC passwords and storing them in Kubernetes secrets to enhance the security of your SonarQube deployment.
 
