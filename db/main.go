@@ -42,6 +42,7 @@ type Configuration struct {
 	PGsql        string
 	PGconf       string
 	PGsvc        string
+	NSSonar      string
 }
 
 func GetConfig(configjs Configuration) Configuration {

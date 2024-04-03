@@ -22,6 +22,7 @@ Sonarpass:      Sonarqube DB user password (Bench123)
 PGsql:		    K8s manifest file for deployment PostgreSQL database (dist/pgsql.yaml)
 PGconf      	K8s manifest file for Configmap PostgreSQL database (dist/pgsal-configmap.yam)
 PGsvc           PostgreSQL k8s service
+NSSonar         Sonarqube namespace
 ```    
 
 
@@ -46,6 +47,7 @@ Before you get started, you’ll need to have these things:
 - Create a PVC for PostgreSQL database
 - Deployment PostgreSQL database
 
+> [!CAUTION] This is a test deployment, we could have used a deployment with a TLS certificate which is recommended in production.
 
 ## Useful commands
 
@@ -58,8 +60,8 @@ Before you get started, you’ll need to have these things:
 Run the following command to automatically install all the required modules based on the go.mod and go.sum files:
 
 ```bash
-k8s-hpa-sonarqubedce:> cd db
-k8s-hpa-sonarqubedce:/db> go mod download
+k8s-helm-sq-key:> cd db
+k8s-helm-sq-key:/db> go mod download
 ``` 
 
 ## ✅ Deploying SonarQube
@@ -67,7 +69,7 @@ k8s-hpa-sonarqubedce:/db> go mod download
 Let’s deploy a SonarQube! When you’re ready, run **./cdk.sh deploy**
 
 ```bash
-k8s-hpa-sonarqubedce:/db> ./cdk.sh deploy
+k8s-helm-sq-key:/db> ./cdk.sh deploy
 Deployment PostgreSQL Database :  Creating namespace... 
 ✅ Namespace databasepg1 created successfully
 Deployment PostgreSQL Database :  Creating PVC... 
@@ -94,27 +96,27 @@ You'll have to wait a few minutes for the External address to be bindered by DNS
 
 We can check if SonarQube is deployed :
 ```bash 
-k8s-hpa-sonarqubedce:/db>  kubectl get pods -n sonarqubedb
+k8s-helm-sq-key:/db>  kubectl get pods -n databasepg
 NAME                        READY   STATUS    RESTARTS   AGE
 postgres-784c5f86c9-vtkmx   1/1     Running   0         1m56s
 
-k8s-hpa-sonarqubedce:/db>
+k8s-helm-sq-key:/db>
 ``` 
 
 We can check if database service running :
 
 ```bash 
-k8s-hpa-sonarqubedce:/db> kubectl get svc -n sonarqubedb
+k8s-helm-sq-key:/db> kubectl get svc -n databasepg
 NAME                        TYPE           CLUSTER-IP     EXTERNAL-IP              PORT(S)          AGE
 service/sonarqube-service   LoadBalancer   10.X.X.X       k8s-sonarqub-xxxx.com   9000:30621/TCP   3m17s
 
-k8s-hpa-sonarqubedce:/db>
+k8s-helm-sq-key:/db>
 ```    
        
 😀  Now you can connect to the Database instance at the following commande :  
 
 ```bash 
- k8s-hpa-sonarqubedce:/db> kubectl -n sonarqubedb exec --stdin --tty postgres-784c5f86c9-vtkmx -- /usr/bin/psql -U sonarqube -c "SELECT datname FROM pg_database;"
+ k8s-helm-sq-key:/db> kubectl -n databasepg exec --stdin --tty postgres-784c5f86c9-vtkmx -- /usr/bin/psql -U sonarqube -c "SELECT datname FROM pg_database;"
 datname  
 -----------
  postgres
@@ -123,13 +125,13 @@ datname
  sonarqube
 (4 rows)
 
-k8s-hpa-sonarqubedce:/db>
+k8s-helm-sq-key:/db>
 ```   
 
 You can also test your external connection to the database , if you have installed a PostgreSQL client tools at the following commande : 
 
 ```bash 
- k8s-hpa-sonarqubedce:/db> psql -h k8s-sonarqub-xxxx.com -U sonarqube -c "SELECT datname FROM pg_database;"
+ k8s-helm-sq-key:/db> psql -h k8s-sonarqub-xxxx.com -U sonarqube -c "SELECT datname FROM pg_database;"
 Password for user sonarqube: 
   datname  
 -----------
@@ -139,7 +141,7 @@ Password for user sonarqube:
  sonarqube
 (4 rows)
 
-k8s-hpa-sonarqubedce:/db>
+k8s-helm-sq-key:/db>
 ```  
    
 -----
