@@ -19,8 +19,8 @@ PGSecret:       K8s manifest file for database secret (dist/pgsecret.yaml)
 StorageClass:   Name of k8s storage class (managed-csi)
 Sonaruser:      Sonarqube DB user (sonarqube)
 Sonarpass:      Sonarqube DB user password (Bench123)
-PGsql:		      K8s manifest file for deployment PostgreSQL database (dist/pgsql.yaml)
-PGconf:      	  K8s manifest file for Configmap PostgreSQL database (dist/pgsal-configmap.yam)
+PGsql:		K8s manifest file for deployment PostgreSQL database (dist/pgsql.yaml)
+PGconf:      	K8s manifest file for Configmap PostgreSQL database (dist/pgsal-configmap.yam)
 PGsvc:          PostgreSQL k8s service
 NSSonar:        Sonarqube namespace
 ```    
