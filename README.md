@@ -29,6 +29,7 @@ server.
 * bash version 4+
 * A Git Client
 * AWS EKS cluster installed
+* [JQ](https://jqlang.github.io/jq/) The command-line JSON processor
 
 ---
 

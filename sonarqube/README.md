@@ -32,7 +32,7 @@ postgresql:
  
 jdbcOverwrite:
   enable: true 
-  jdbcUrl: "jdbc:postgresql://k8s-database-postgres-e93919df7a-6929375e040a7e33.elb.eu-central-1.amazonaws.com:5432/sonarqube?currentSchema=public"
+  jdbcUrl: "jdbc:postgresql://k8s-database-postgres-xxxxxxxx.com:5432/sonarqube?currentSchema=public"
   jdbcUsername: "sonarqube"
   jdbcSecretName: "sonarjdbcpassword"
   jdbcSecretPasswordKey: "SONAR_JDBC_PASSWORD"
@@ -47,6 +47,10 @@ service:
    service.beta.kubernetes.io/aws-load-balancer-type: nlb
 
 ```
+
+> [!CAUTION] 
+> Before continuing, don't forget to modify the values.yml file located in the dist directory and set the correct value for your jdbcUrl.
+You can take the CLUSTER-IP address or the EXTERNAL-IP address of the postgres service .
 
 ▶️ Install the SonarQube EE Helm Chart with a custom values :
 

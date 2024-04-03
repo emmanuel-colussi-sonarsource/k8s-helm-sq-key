@@ -16,7 +16,8 @@ AES-GCM is an authenticated encryption mode that uses the AES block cipher in co
 
 - **Base64 Encoding:** To facilitate interoperability and ease of integration with SonarQube deployments, the resulting encryption key is encoded in base64 format. Base64 encoding ensures that the encryption key is represented in a human-readable and platform-independent manner, making it suitable for storage in configuration files, environment variables, or Kubernetes secrets.
 
-> [!CAUTION] It's important to note that while these specifications are current as of the latest SonarQube version, they represent an internal implementation subject to change at any time without notice. As a result, externally generated encryption keys may not guarantee compatibility with future SonarQube versions. Therefore, it's imperative for organizations to stay informed about updates and changes to SonarQube's encryption requirements to maintain the security and compatibility of their deployments.
+> [!CAUTION] 
+> It's important to note that while these specifications are current as of the latest SonarQube version, they represent an internal implementation subject to change at any time without notice. As a result, externally generated encryption keys may not guarantee compatibility with future SonarQube versions. Therefore, it's imperative for organizations to stay informed about updates and changes to SonarQube's encryption requirements to maintain the security and compatibility of their deployments.
 
 ---
 
@@ -49,7 +50,7 @@ k8s-helm-sq-key:> cd key
 k8s-helm-sq-key:/key> go mod download
 ``` 
 
-## Using a Go Program to Generate Encryption Key and Encrypt PostgreSQL Password
+## ✅ Using a Go Program to Generate Encryption Key and Encrypt PostgreSQL Password
 In order to automate the process of generating an encryption key and encrypting the PostgreSQL password, we can utilize a Go program. This program will not only generate a key following the specifications outlined earlier but also encrypt the default PostgreSQL password (Bench123) that we initialized in the config.json file located in the db directory during the PostgreSQL deployment.
 
 Generate an Encryption AES/GCM Key with the following command :
@@ -78,7 +79,7 @@ sonarjdbcpassword   Opaque   1      1m19s
 k8s-helm-sq-key:/key>
 ```
 
-Now we can deploy SonarQube
+## ✅ Now we can deploy SonarQube 
  
 -----
 <table>

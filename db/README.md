@@ -19,10 +19,10 @@ PGSecret:       K8s manifest file for database secret (dist/pgsecret.yaml)
 StorageClass:   Name of k8s storage class (managed-csi)
 Sonaruser:      Sonarqube DB user (sonarqube)
 Sonarpass:      Sonarqube DB user password (Bench123)
-PGsql:		    K8s manifest file for deployment PostgreSQL database (dist/pgsql.yaml)
-PGconf      	K8s manifest file for Configmap PostgreSQL database (dist/pgsal-configmap.yam)
-PGsvc           PostgreSQL k8s service
-NSSonar         Sonarqube namespace
+PGsql:		      K8s manifest file for deployment PostgreSQL database (dist/pgsql.yaml)
+PGconf:      	  K8s manifest file for Configmap PostgreSQL database (dist/pgsal-configmap.yam)
+PGsvc:          PostgreSQL k8s service
+NSSonar:        Sonarqube namespace
 ```    
 
 
@@ -108,10 +108,11 @@ We can check if database service running :
 ```bash 
 k8s-helm-sq-key:/db> kubectl get svc -n databasepg
 NAME                        TYPE           CLUSTER-IP     EXTERNAL-IP              PORT(S)          AGE
-service/sonarqube-service   LoadBalancer   10.X.X.X       k8s-sonarqub-xxxx.com   9000:30621/TCP   3m17s
+service/postgres-service   LoadBalancer   10.X.X.X       k8s-database-xxxx.com   9000:30621/TCP   3m17s
 
 k8s-helm-sq-key:/db>
 ```    
+
        
 😀  Now you can connect to the Database instance at the following commande :  
 
@@ -131,7 +132,7 @@ k8s-helm-sq-key:/db>
 You can also test your external connection to the database , if you have installed a PostgreSQL client tools at the following commande : 
 
 ```bash 
- k8s-helm-sq-key:/db> psql -h k8s-sonarqub-xxxx.com -U sonarqube -c "SELECT datname FROM pg_database;"
+ k8s-helm-sq-key:/db> psql -h k8s-database-xxxx.com -U sonarqube -c "SELECT datname FROM pg_database;"
 Password for user sonarqube: 
   datname  
 -----------
@@ -143,6 +144,9 @@ Password for user sonarqube:
 
 k8s-helm-sq-key:/db>
 ```  
+
+> [!CAUTION]
+> Note the CLUSTER-IP or  EXTERNAL-IP address of the postgres service you will need it during the SonarQube deployment stage
    
 -----
 <table>
