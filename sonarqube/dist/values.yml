@@ -10,7 +10,7 @@ postgresql:
  
 jdbcOverwrite:
   enable: true 
-  jdbcUrl: "jdbc:postgresql://k8s-database-postgres-e93919df7a-6929375e040a7e33.elb.eu-central-1.amazonaws.com:5432/sonarqube?currentSchema=public"
+  jdbcUrl: "jdbc:postgresql://k8s-database-postgres-xxxx.com:5432/sonarqube?currentSchema=public"
   jdbcUsername: "sonarqube"
   jdbcSecretName: "sonarjdbcpassword"
   jdbcSecretPasswordKey: "SONAR_JDBC_PASSWORD"
