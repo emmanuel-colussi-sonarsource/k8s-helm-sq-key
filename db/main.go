@@ -165,6 +165,7 @@ func LoadConfigFromFile(filePath string, config interface{}) (interface{}, error
 
 func main() {
 
+	const progressFormat = "\r%s %s \n"
 	var config1 Configuration
 	var AppConfig = GetConfig(config1)
 
@@ -187,7 +188,7 @@ func main() {
 	kubeconfigPath := filepath.Join(os.Getenv("HOME"), ".kube", "config")
 	config, err := rest.InClusterConfig()
 	if err != nil {
-		config, err = clientcmd.BuildConfigFromFlags("", kubeconfigPath)
+		config, _ = clientcmd.BuildConfigFromFlags("", kubeconfigPath)
 	}
 
 	clientset, err := kubernetes.NewForConfig(config)
@@ -209,7 +210,7 @@ func main() {
 		spin.Color("green", "bold")
 		spin.Start()
 
-		fmt.Printf("\r%s %s \n", spin.Prefix, "Creating namespace...")
+		fmt.Printf(progressFormat, spin.Prefix, "Creating namespace...")
 		// Create a Namespace Database
 		nsName := &v1.Namespace{
 			ObjectMeta: metav1.ObjectMeta{
@@ -224,7 +225,7 @@ func main() {
 		}
 		fmt.Printf("\r✅ Namespace %s created successfully\n", AppConfig.NSDataBase)
 
-		fmt.Printf("\r%s %s \n", spin.Prefix, "Creating PVC...")
+		fmt.Printf(progressFormat, spin.Prefix, "Creating PVC...")
 
 		// Create a PVC for database
 		pvc := &v1.PersistentVolumeClaim{
@@ -250,7 +251,7 @@ func main() {
 		}
 		fmt.Println("\r✅ PVC Database : pgsql-data created successfully\n")
 
-		fmt.Printf("\r%s %s \n", spin.Prefix, "Creating secret database...")
+		fmt.Printf(progressFormat, spin.Prefix, "Creating secret database...")
 
 		//Create a secret database
 		dd, err := dynamic.NewForConfig(config)
@@ -267,12 +268,12 @@ func main() {
 		err = applyResourcesFromYAML(pvYAML, clientset, dd, AppConfig.NSDataBase)
 		if err != nil {
 			spin.Stop()
-			log.Fatalf("\n ❌ Error applying %s file %v\n", err, AppConfig.PGSecret)
+			log.Fatalf("\n ❌ Error applying Database secret %s file %v\n", err, AppConfig.PGSecret)
 			return
 		}
 		fmt.Println("\r✅ Database secret created successfully\n")
 
-		fmt.Printf("\r%s %s \n", spin.Prefix, "Creating ConfigMap Init DB...")
+		fmt.Printf(progressFormat, spin.Prefix, "Creating ConfigMap Init DB...")
 
 		// Create a ConfigMap Init DB
 		PGsqlInit := v1.ConfigMap{
@@ -294,7 +295,7 @@ func main() {
 		}
 		fmt.Println("\r✅ PGSQLInit configMaps created successfully\n")
 
-		fmt.Printf("\r%s %s \n", spin.Prefix, "Creating ConfigMap DATA DB...")
+		fmt.Printf(progressFormat, spin.Prefix, "Creating ConfigMap DATA DB...")
 		// Create a ConfigMap DATA DB
 		pgcYAML, err := os.ReadFile(AppConfig.PGconf)
 		if err != nil {
@@ -305,13 +306,13 @@ func main() {
 		err = applyResourcesFromYAML(pgcYAML, clientset, dd, AppConfig.NSDataBase)
 		if err != nil {
 			spin.Stop()
-			log.Fatalf("\n ❌ Error applying %s file %v\n", err, AppConfig.PGconf)
+			log.Fatalf("\n ❌ Error applying configMaps : %s file %v\n", err, AppConfig.PGconf)
 			return
 		}
 
 		fmt.Println("\r✅ PGSQLData configMaps created successfully\n")
 
-		fmt.Printf("\r%s %s \n", spin.Prefix, "Deploy Postgresql deployment...")
+		fmt.Printf(progressFormat, spin.Prefix, "Deploy Postgresql deployment...")
 
 		// Deploy Postgresql
 
@@ -324,7 +325,7 @@ func main() {
 		err = applyResourcesFromYAML(pgYAML, clientset, dd, AppConfig.NSDataBase)
 		if err != nil {
 			spin.Stop()
-			log.Fatalf("\n ❌ Error applying %s file %v\n", err, AppConfig.PGsql)
+			log.Fatalf("\n ❌ Error applying PGSQL %s file %v\n", err, AppConfig.PGsql)
 			return
 		}
 
@@ -360,6 +361,7 @@ func main() {
 			os.Exit(1)
 		}
 		fmt.Println("\n ✅ Deployment Database deleted successfully\n")
+
 		spin.Stop()
 
 	}

@@ -29,6 +29,7 @@ spec:
             name: postgredb
           - mountPath: /docker-entrypoint-initdb.d
             name: initscript 
+      automountServiceAccountToken: false
       volumes:
        - name: initscript
          configMap:
